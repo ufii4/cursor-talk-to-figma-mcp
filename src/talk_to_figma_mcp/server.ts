@@ -2649,7 +2649,6 @@ type FigmaCommand =
   | "create_connections"
   | "set_focus"
   | "set_selections"
-  // Phase 1: Component Creation & Management
   | "create_component"
   | "create_component_from_node"
   | "combine_as_variants"
@@ -2657,26 +2656,22 @@ type FigmaCommand =
   | "edit_component_property"
   | "delete_component_property"
   | "create_instance_from_local"
-  // Phase 2: Variables / Design Tokens
   | "create_variable_collection"
   | "create_variable"
   | "set_variable_value"
   | "get_local_variables"
   | "get_local_variable_collections"
   | "set_variable_binding"
-  // Phase 3: Styles
   | "create_paint_style"
   | "create_text_style"
   | "create_effect_style"
   | "apply_style_to_node"
-  // Phase 4: Additional Shapes
   | "create_ellipse"
   | "create_line"
   | "create_polygon"
   | "create_star"
   | "create_vector"
   | "create_boolean_operation"
-  // Phase 5: Enhanced Properties
   | "set_opacity"
   | "set_blend_mode"
   | "set_effects"
@@ -2832,7 +2827,6 @@ type CommandParams = {
     nodeIds: string[];
   };
 
-  // Phase 1: Component Creation & Management
   create_component: {
     name: string;
     x?: number;
@@ -2872,8 +2866,6 @@ type CommandParams = {
     y?: number;
     parentId?: string;
   };
-
-  // Phase 2: Variables / Design Tokens
   create_variable_collection: {
     name: string;
   };
@@ -2896,8 +2888,6 @@ type CommandParams = {
     field: string;
     variableId: string;
   };
-
-  // Phase 3: Styles
   create_paint_style: {
     name: string;
     color: { r: number; g: number; b: number; a?: number };
@@ -2928,8 +2918,6 @@ type CommandParams = {
     styleId: string;
     styleType: "fill" | "stroke" | "text" | "effect";
   };
-
-  // Phase 4: Additional Shapes
   create_ellipse: {
     x: number;
     y: number;
@@ -2977,8 +2965,6 @@ type CommandParams = {
     operation: "UNION" | "INTERSECT" | "SUBTRACT" | "EXCLUDE";
     name?: string;
   };
-
-  // Phase 5: Enhanced Properties
   set_opacity: {
     nodeId: string;
     opacity: number;
@@ -3247,10 +3233,7 @@ function sendCommandToFigma(
   });
 }
 
-// ==========================================
-// Phase 1: Component Creation & Management
-// ==========================================
-
+// Create Component Tool
 server.tool(
   "create_component",
   "Create a new empty component in Figma",
@@ -3272,6 +3255,7 @@ server.tool(
   }
 );
 
+// Create Component From Node Tool
 server.tool(
   "create_component_from_node",
   "Convert an existing node into a component",
@@ -3288,6 +3272,7 @@ server.tool(
   }
 );
 
+// Combine As Variants Tool
 server.tool(
   "combine_as_variants",
   "Combine multiple components into a variant set",
@@ -3305,6 +3290,7 @@ server.tool(
   }
 );
 
+// Add Component Property Tool
 server.tool(
   "add_component_property",
   "Add a property to a component (BOOLEAN, TEXT, INSTANCE_SWAP, or VARIANT)",
@@ -3328,6 +3314,7 @@ server.tool(
   }
 );
 
+// Edit Component Property Tool
 server.tool(
   "edit_component_property",
   "Modify an existing component property",
@@ -3351,6 +3338,7 @@ server.tool(
   }
 );
 
+// Delete Component Property Tool
 server.tool(
   "delete_component_property",
   "Remove a property from a component",
@@ -3368,6 +3356,7 @@ server.tool(
   }
 );
 
+// Create Instance From Local Component Tool
 server.tool(
   "create_instance_from_local",
   "Create an instance of a local component by its node ID",
@@ -3387,10 +3376,7 @@ server.tool(
   }
 );
 
-// ==========================================
-// Phase 2: Variables / Design Tokens
-// ==========================================
-
+// Create Variable Collection Tool
 server.tool(
   "create_variable_collection",
   "Create a new variable collection for design tokens",
@@ -3407,6 +3393,7 @@ server.tool(
   }
 );
 
+// Create Variable Tool
 server.tool(
   "create_variable",
   "Create a new variable (design token) in a collection",
@@ -3425,6 +3412,7 @@ server.tool(
   }
 );
 
+// Set Variable Value Tool
 server.tool(
   "set_variable_value",
   "Set a variable's value for a specific mode",
@@ -3453,6 +3441,7 @@ server.tool(
   }
 );
 
+// Get Local Variables Tool
 server.tool(
   "get_local_variables",
   "List local variables, optionally filtered by type",
@@ -3469,6 +3458,7 @@ server.tool(
   }
 );
 
+// Get Local Variable Collections Tool
 server.tool(
   "get_local_variable_collections",
   "List all local variable collections",
@@ -3483,6 +3473,7 @@ server.tool(
   }
 );
 
+// Set Variable Binding Tool
 server.tool(
   "set_variable_binding",
   "Bind a variable to a node property",
@@ -3501,10 +3492,7 @@ server.tool(
   }
 );
 
-// ==========================================
-// Phase 3: Styles
-// ==========================================
-
+// Create Paint Style Tool
 server.tool(
   "create_paint_style",
   "Create a color/paint style",
@@ -3527,6 +3515,7 @@ server.tool(
   }
 );
 
+// Create Text Style Tool
 server.tool(
   "create_text_style",
   "Create a text style with font properties",
@@ -3562,6 +3551,7 @@ server.tool(
   }
 );
 
+// Create Effect Style Tool
 server.tool(
   "create_effect_style",
   "Create an effect style (shadows, blurs)",
@@ -3590,6 +3580,7 @@ server.tool(
   }
 );
 
+// Apply Style To Node Tool
 server.tool(
   "apply_style_to_node",
   "Apply a style to a node (fill, stroke, text, or effect style)",
@@ -3608,10 +3599,7 @@ server.tool(
   }
 );
 
-// ==========================================
-// Phase 4: Additional Shapes
-// ==========================================
-
+// Create Ellipse Tool
 server.tool(
   "create_ellipse",
   "Create an ellipse/circle in Figma",
@@ -3633,6 +3621,7 @@ server.tool(
   }
 );
 
+// Create Line Tool
 server.tool(
   "create_line",
   "Create a line in Figma",
@@ -3654,6 +3643,7 @@ server.tool(
   }
 );
 
+// Create Polygon Tool
 server.tool(
   "create_polygon",
   "Create a polygon in Figma",
@@ -3676,6 +3666,7 @@ server.tool(
   }
 );
 
+// Create Star Tool
 server.tool(
   "create_star",
   "Create a star shape in Figma",
@@ -3699,6 +3690,7 @@ server.tool(
   }
 );
 
+// Create Vector Tool
 server.tool(
   "create_vector",
   "Create a vector path in Figma using SVG-like path data",
@@ -3722,6 +3714,7 @@ server.tool(
   }
 );
 
+// Create Boolean Operation Tool
 server.tool(
   "create_boolean_operation",
   "Create a boolean operation (union, intersect, subtract, exclude) from multiple nodes",
@@ -3740,10 +3733,7 @@ server.tool(
   }
 );
 
-// ==========================================
-// Phase 5: Enhanced Properties
-// ==========================================
-
+// Set Opacity Tool
 server.tool(
   "set_opacity",
   "Set the opacity of a node",
@@ -3761,6 +3751,7 @@ server.tool(
   }
 );
 
+// Set Blend Mode Tool
 server.tool(
   "set_blend_mode",
   "Set the blend mode of a node",
@@ -3784,6 +3775,7 @@ server.tool(
   }
 );
 
+// Set Effects Tool
 server.tool(
   "set_effects",
   "Set effects (shadows, blurs) on a node",
@@ -3812,6 +3804,7 @@ server.tool(
   }
 );
 
+// Set Constraints Tool
 server.tool(
   "set_constraints",
   "Set layout constraints on a node",
@@ -3830,6 +3823,7 @@ server.tool(
   }
 );
 
+// Set Export Settings Tool
 server.tool(
   "set_export_settings",
   "Set export settings on a node",
@@ -3855,6 +3849,7 @@ server.tool(
   }
 );
 
+// Set Node Properties Tool
 server.tool(
   "set_node_properties",
   "Batch-set multiple properties on a node at once",

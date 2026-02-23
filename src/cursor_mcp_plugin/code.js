@@ -233,7 +233,6 @@ async function handleCommand(command, params) {
       return await setFocus(params);
     case "set_selections":
       return await setSelections(params);
-    // Phase 1: Component Creation & Management
     case "create_component":
       return await createComponent(params);
     case "create_component_from_node":
@@ -248,7 +247,6 @@ async function handleCommand(command, params) {
       return await deleteComponentProperty(params);
     case "create_instance_from_local":
       return await createInstanceFromLocal(params);
-    // Phase 2: Variables / Design Tokens
     case "create_variable_collection":
       return await createVariableCollection(params);
     case "create_variable":
@@ -261,7 +259,6 @@ async function handleCommand(command, params) {
       return await getLocalVariableCollections();
     case "set_variable_binding":
       return await setVariableBinding(params);
-    // Phase 3: Styles
     case "create_paint_style":
       return await createPaintStyle(params);
     case "create_text_style":
@@ -270,7 +267,6 @@ async function handleCommand(command, params) {
       return await createEffectStyle(params);
     case "apply_style_to_node":
       return await applyStyleToNode(params);
-    // Phase 4: Additional Shapes
     case "create_ellipse":
       return await createEllipse(params);
     case "create_line":
@@ -283,7 +279,6 @@ async function handleCommand(command, params) {
       return await createVector(params);
     case "create_boolean_operation":
       return await createBooleanOperation(params);
-    // Phase 5: Enhanced Properties
     case "set_opacity":
       return await setOpacity(params);
     case "set_blend_mode":
@@ -4090,10 +4085,7 @@ async function setSelections(params) {
   };
 }
 
-// ==========================================
-// Phase 1: Component Creation & Management
-// ==========================================
-
+// Create a new component
 async function createComponent(params) {
   const { name, x = 0, y = 0, width = 100, height = 100, parentId } = params || {};
   if (!name) throw new Error("Missing name parameter");
@@ -4120,6 +4112,7 @@ async function createComponent(params) {
   };
 }
 
+// Convert an existing node into a component
 async function createComponentFromNode(params) {
   if (!params || !params.nodeId) throw new Error("Missing nodeId parameter");
 
@@ -4157,6 +4150,7 @@ async function createComponentFromNode(params) {
   };
 }
 
+// Combine multiple components into a variant set
 async function combineAsVariants(params) {
   if (!params || !params.componentIds || !Array.isArray(params.componentIds)) {
     throw new Error("Missing or invalid componentIds parameter");
@@ -4186,6 +4180,7 @@ async function combineAsVariants(params) {
   };
 }
 
+// Add a property to a component
 async function addComponentProperty(params) {
   if (!params || !params.componentId || !params.propertyName || !params.type) {
     throw new Error("Missing required parameters: componentId, propertyName, type");
@@ -4212,6 +4207,7 @@ async function addComponentProperty(params) {
   };
 }
 
+// Edit an existing component property
 async function editComponentProperty(params) {
   if (!params || !params.componentId || !params.propertyName) {
     throw new Error("Missing required parameters: componentId, propertyName");
@@ -4237,6 +4233,7 @@ async function editComponentProperty(params) {
   };
 }
 
+// Delete a component property
 async function deleteComponentProperty(params) {
   if (!params || !params.componentId || !params.propertyName) {
     throw new Error("Missing required parameters: componentId, propertyName");
@@ -4257,6 +4254,7 @@ async function deleteComponentProperty(params) {
   };
 }
 
+// Create an instance of a local component by node ID
 async function createInstanceFromLocal(params) {
   if (!params || !params.componentId) throw new Error("Missing componentId parameter");
 
@@ -4284,10 +4282,7 @@ async function createInstanceFromLocal(params) {
   };
 }
 
-// ==========================================
-// Phase 2: Variables / Design Tokens
-// ==========================================
-
+// Create a new variable collection
 async function createVariableCollection(params) {
   if (!params || !params.name) throw new Error("Missing name parameter");
 
@@ -4301,6 +4296,7 @@ async function createVariableCollection(params) {
   };
 }
 
+// Create a new variable in a collection
 async function createVariable(params) {
   if (!params || !params.collectionId || !params.name || !params.resolvedType) {
     throw new Error("Missing required parameters: collectionId, name, resolvedType");
@@ -4317,6 +4313,7 @@ async function createVariable(params) {
   };
 }
 
+// Set a variable's value for a specific mode
 async function setVariableValue(params) {
   if (!params || !params.variableId || !params.modeId || params.value === undefined) {
     throw new Error("Missing required parameters: variableId, modeId, value");
@@ -4341,6 +4338,7 @@ async function setVariableValue(params) {
   };
 }
 
+// Get local variables with optional type filter
 async function getLocalVariables(params) {
   let variables;
   if (params && params.type) {
@@ -4362,6 +4360,7 @@ async function getLocalVariables(params) {
   };
 }
 
+// Get all local variable collections
 async function getLocalVariableCollections() {
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
 
@@ -4378,6 +4377,7 @@ async function getLocalVariableCollections() {
   };
 }
 
+// Bind a variable to a node property
 async function setVariableBinding(params) {
   if (!params || !params.nodeId || !params.field || !params.variableId) {
     throw new Error("Missing required parameters: nodeId, field, variableId");
@@ -4405,10 +4405,7 @@ async function setVariableBinding(params) {
   };
 }
 
-// ==========================================
-// Phase 3: Styles
-// ==========================================
-
+// Create a paint/color style
 async function createPaintStyle(params) {
   if (!params || !params.name || !params.color) {
     throw new Error("Missing required parameters: name, color");
@@ -4427,6 +4424,7 @@ async function createPaintStyle(params) {
   };
 }
 
+// Create a text style with font properties
 async function createTextStyleHandler(params) {
   if (!params || !params.name || !params.fontFamily || !params.fontSize) {
     throw new Error("Missing required parameters: name, fontFamily, fontSize");
@@ -4469,6 +4467,7 @@ async function createTextStyleHandler(params) {
   };
 }
 
+// Create an effect style (shadows, blurs)
 async function createEffectStyle(params) {
   if (!params || !params.name || !params.effects) {
     throw new Error("Missing required parameters: name, effects");
@@ -4502,6 +4501,7 @@ async function createEffectStyle(params) {
   };
 }
 
+// Apply a style to a node
 async function applyStyleToNode(params) {
   if (!params || !params.nodeId || !params.styleId || !params.styleType) {
     throw new Error("Missing required parameters: nodeId, styleId, styleType");
@@ -4539,10 +4539,7 @@ async function applyStyleToNode(params) {
   };
 }
 
-// ==========================================
-// Phase 4: Additional Shapes
-// ==========================================
-
+// Create an ellipse
 async function createEllipse(params) {
   if (!params) throw new Error("Missing parameters");
 
@@ -4565,6 +4562,7 @@ async function createEllipse(params) {
   };
 }
 
+// Create a line
 async function createLine(params) {
   if (!params) throw new Error("Missing parameters");
 
@@ -4590,6 +4588,7 @@ async function createLine(params) {
   };
 }
 
+// Create a polygon
 async function createPolygon(params) {
   if (!params) throw new Error("Missing parameters");
 
@@ -4614,6 +4613,7 @@ async function createPolygon(params) {
   };
 }
 
+// Create a star shape
 async function createStar(params) {
   if (!params) throw new Error("Missing parameters");
 
@@ -4640,6 +4640,7 @@ async function createStar(params) {
   };
 }
 
+// Create a vector path
 async function createVector(params) {
   if (!params || !params.vectorPaths) throw new Error("Missing vectorPaths parameter");
 
@@ -4662,6 +4663,7 @@ async function createVector(params) {
   };
 }
 
+// Create a boolean operation from multiple nodes
 async function createBooleanOperation(params) {
   if (!params || !params.nodeIds || !Array.isArray(params.nodeIds) || !params.operation) {
     throw new Error("Missing required parameters: nodeIds, operation");
@@ -4696,10 +4698,7 @@ async function createBooleanOperation(params) {
   };
 }
 
-// ==========================================
-// Phase 5: Enhanced Properties
-// ==========================================
-
+// Set opacity on a node
 async function setOpacity(params) {
   if (!params || !params.nodeId || params.opacity === undefined) {
     throw new Error("Missing required parameters: nodeId, opacity");
@@ -4718,6 +4717,7 @@ async function setOpacity(params) {
   };
 }
 
+// Set blend mode on a node
 async function setBlendMode(params) {
   if (!params || !params.nodeId || !params.blendMode) {
     throw new Error("Missing required parameters: nodeId, blendMode");
@@ -4736,6 +4736,7 @@ async function setBlendMode(params) {
   };
 }
 
+// Set effects (shadows, blurs) on a node
 async function setEffects(params) {
   if (!params || !params.nodeId || !params.effects) {
     throw new Error("Missing required parameters: nodeId, effects");
@@ -4770,6 +4771,7 @@ async function setEffects(params) {
   };
 }
 
+// Set layout constraints on a node
 async function setConstraints(params) {
   if (!params || !params.nodeId || !params.horizontal || !params.vertical) {
     throw new Error("Missing required parameters: nodeId, horizontal, vertical");
@@ -4791,6 +4793,7 @@ async function setConstraints(params) {
   };
 }
 
+// Set export settings on a node
 async function setExportSettings(params) {
   if (!params || !params.nodeId || !params.settings) {
     throw new Error("Missing required parameters: nodeId, settings");
@@ -4815,6 +4818,7 @@ async function setExportSettings(params) {
   };
 }
 
+// Batch-set multiple properties on a node
 async function setNodeProperties(params) {
   if (!params || !params.nodeId || !params.properties) {
     throw new Error("Missing required parameters: nodeId, properties");
