@@ -4512,19 +4512,19 @@ async function applyStyleToNode(params) {
 
   switch (params.styleType) {
     case "fill":
-      if ("fillStyleId" in node) node.fillStyleId = params.styleId;
+      if ("setFillStyleIdAsync" in node) await node.setFillStyleIdAsync(params.styleId);
       else throw new Error("Node does not support fill styles");
       break;
     case "stroke":
-      if ("strokeStyleId" in node) node.strokeStyleId = params.styleId;
+      if ("setStrokeStyleIdAsync" in node) await node.setStrokeStyleIdAsync(params.styleId);
       else throw new Error("Node does not support stroke styles");
       break;
     case "text":
-      if ("textStyleId" in node) node.textStyleId = params.styleId;
+      if ("setTextStyleIdAsync" in node) await node.setTextStyleIdAsync(params.styleId);
       else throw new Error("Node does not support text styles");
       break;
     case "effect":
-      if ("effectStyleId" in node) node.effectStyleId = params.styleId;
+      if ("setEffectStyleIdAsync" in node) await node.setEffectStyleIdAsync(params.styleId);
       else throw new Error("Node does not support effect styles");
       break;
     default:
@@ -4830,9 +4830,20 @@ async function setNodeProperties(params) {
   const applied = {};
   const errors = {};
 
+  // Properties that require async setters in dynamic-page mode
+  const asyncSetters = {
+    fillStyleId: "setFillStyleIdAsync",
+    strokeStyleId: "setStrokeStyleIdAsync",
+    textStyleId: "setTextStyleIdAsync",
+    effectStyleId: "setEffectStyleIdAsync",
+  };
+
   for (const [key, value] of Object.entries(params.properties)) {
     try {
-      if (key in node) {
+      if (asyncSetters[key] && asyncSetters[key] in node) {
+        await node[asyncSetters[key]](value);
+        applied[key] = value;
+      } else if (key in node) {
         node[key] = value;
         applied[key] = value;
       } else {
